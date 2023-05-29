@@ -13,7 +13,7 @@ const cleanUpBtn = document.querySelector("#clean-up-btn");
 let originalInputValue;
 
 /********** Function - General **********/
-const saveTodo = (text, done = 0, save = 1) => {
+const saveTodo = (text, done = 0, doing = 0, save = 1) => {
   const todo = document.createElement("div");
   todo.classList.add("todo");
 
@@ -36,18 +36,20 @@ const saveTodo = (text, done = 0, save = 1) => {
   deleteBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   todo.appendChild(deleteBtn);
 
-  const onGoingBtn = document.createElement("button");
-  onGoingBtn.classList.add("ongoing-todo");
-  onGoingBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
-  todo.appendChild(onGoingBtn);
+  const doingBtn = document.createElement("button");
+  doingBtn.classList.add("doing-todo");
+  doingBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+  todo.appendChild(doingBtn);
 
   // Utilizando dados da localStorage
   if (done) {
     todo.classList.add("done");
+  } else if (doing) {
+    todo.classList.add("doing");
   }
 
   if (save) {
-    saveTodoLocalStorage({ text, done: 0 });
+    saveTodoLocalStorage({ text, done: 0, doing: 0 });
   }
 
   todoList.appendChild(todo);
@@ -91,6 +93,7 @@ const filterTodos = (filterValue) => {
     case "all":
       todos.forEach((todo) => (todo.style.display = "flex"));
       break;
+
     case "done":
       todos.forEach((todo) =>
         todo.classList.contains("done")
@@ -98,13 +101,23 @@ const filterTodos = (filterValue) => {
           : (todo.style.display = "none")
       );
       break;
+
     case "todo":
       todos.forEach((todo) =>
-        !todo.classList.contains("done")
+        !todo.classList.contains("done") && !todo.classList.contains("doing")
           ? (todo.style.display = "flex")
           : (todo.style.display = "none")
       );
       break;
+
+    case "doing":
+      todos.forEach((todo) =>
+        todo.classList.contains("doing")
+          ? (todo.style.display = "flex")
+          : (todo.style.display = "none")
+      );
+      break;
+
     default:
       break;
   }
@@ -113,7 +126,7 @@ const filterTodos = (filterValue) => {
 const loadTodos = () => {
   const todos = getTodosLocalStorage();
   todos.forEach((todo) => {
-    saveTodo(todo.text, todo.done, 0);
+    saveTodo(todo.text, todo.done, todo.doing, 0);
   });
 };
 
@@ -151,6 +164,14 @@ const updateTodoStatusLocalStorage = (todoText) => {
   localStorage.setItem("todos", JSON.stringify(todos));
 };
 
+const updateTodoStatusDoingLocalStorage = (todoText) => {
+  const todos = getTodosLocalStorage();
+  todos.map((todo) =>
+    todo.text === todoText ? (todo.doing = !todo.doing) : null
+  );
+  localStorage.setItem("todos", JSON.stringify(todos));
+};
+
 const updateTodoLocalStorage = (todoOldText, todoNewText) => {
   const todos = getTodosLocalStorage();
   todos.map((todo) =>
@@ -179,8 +200,8 @@ document.addEventListener("click", (e) => {
   }
 
   if (targetEl.classList.contains("finish-todo")) {
-    if (parentEl.classList.contains("ongoing")) {
-      parentEl.classList.remove("ongoing");
+    if (parentEl.classList.contains("doing")) {
+      parentEl.classList.remove("doing");
     }
     parentEl.classList.toggle("done");
     updateTodoStatusLocalStorage(todoTitle);
@@ -198,12 +219,12 @@ document.addEventListener("click", (e) => {
     originalInputValue = todoTitle;
   }
 
-  if (targetEl.classList.contains("ongoing-todo")) {
+  if (targetEl.classList.contains("doing-todo")) {
     if (!parentEl.classList.contains("done")) {
-      parentEl.classList.toggle("ongoing");
+      parentEl.classList.toggle("doing");
+      updateTodoStatusDoingLocalStorage(todoTitle);
     }
   }
-
 });
 
 cancelEditBtn.addEventListener("click", (e) => {
