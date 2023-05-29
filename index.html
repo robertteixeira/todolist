@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced To Do List</title>
+    <!-- CSS Style -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Java Script -->
+    <script src="js/scripts.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Main container -->
+    <div class="todo-container">
+      <header>
+        <h1>To Do List</h1>
+      </header>
+
+      <!-- Main form (ToDo) -->
+      <form id="todo-form">
+        <p>Add task:</p>
+        <div class="form-control">
+          <input type="text" id="todo-input" placeholder="to do task" />
+          <button type="submit">
+            <i class="fa-thin fa-plus"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Edit form (ToDo) -->
+      <form id="edit-form" class="hide">
+        <p>Edit task:</p>
+        <div class="form-control">
+          <input type="text" id="edit-input" />
+          <button type="submit">
+            <i class="fa-solid fa-check-double"></i>
+          </button>
+        </div>
+        <button id="cancel-edit-btn">Cancel</button>
+      </form>
+
+      <!-- Tool bar -->
+      <div id="toolbar">
+        <!-- Search -->
+        <div id="search">
+          <h4>Search:</h4>
+          <form>
+            <input type="text" id="search-input" placeholder="Search" />
+            <button id="erase-button">
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Filter -->
+        <div id="filter">
+          <h4>Filter:</h4>
+          <select id="filter-select">
+            <option value="all">All</option>
+            <option value="ongoing">On Going</option>
+            <option value="todo">To Do</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Results - To do activities list - Dinamically Updated -->
+      <div id="todo-list"></div>
+
+      <!-- Clean Up the to do list-->
+      <div class="clean-up-localstorage">
+        <form>
+          <button id="clean-up-btn">
+            <span>Clean up to do list</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
