@@ -52,7 +52,7 @@ select {
 /* Todo Header */
 .todo-container {
   max-width: 450px;
-  margin: 2rem auto 0;
+  margin: 5% auto auto 5%;
   background-color: #ffffff;
   padding: 1.5rem;
   border-radius: 20px;
@@ -71,6 +71,7 @@ select {
   color: #af6161;
   font-weight: lighter ;
   font-size: 80%;
+  padding: 0rem 0.5rem;
 }
 
 /* Todo Form */
